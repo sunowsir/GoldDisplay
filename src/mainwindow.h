@@ -6,19 +6,27 @@
 #include <QWidget>
 
 #include <QMainWindow>
+
 #include <QMessageBox>
 
-#include "gold_price_fetcher.h"
+#include "traywidget.h"
+#include "info_display_widget.h"
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
-    GoldPriceFetcher    *gold_price_fetcher;
-
+    TrayWidget  *t;
+    Info_Display_Widget *info_display_widget;
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+protected:
+    void closeEvent(QCloseEvent *event);
+    void changeEvent(QEvent *e);
+    // void paintEvent(QPaintEvent *e);
+public slots:
+    void trayAction(QSystemTrayIcon::ActivationReason reason);
 };
 
 #endif // MAINWINDOW_H
