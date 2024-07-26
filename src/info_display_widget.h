@@ -21,6 +21,7 @@
 #include <QPushButton>
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QTimer>
 
 #include <qlineedit.h>
 #include <qtextedit.h>
@@ -36,11 +37,16 @@ class Info_Display_Widget : public QWidget {
     QMainWindow     *parent;
 
     QLabel          *info_label;
+
     GoldPriceFetcher *gold_price_fetcher;
+    QTimer          *timer;
 
 public:
     explicit Info_Display_Widget(QMainWindow *parent = nullptr);
     ~Info_Display_Widget();
+
+private slots: 
+    void info_label_text_update();
 };
 
 #endif
