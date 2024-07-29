@@ -9,15 +9,17 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+SET(ROOT_DIR ${CMAKE_SOURCE_DIR})
 
 
 # 查找 libxml2 包
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(LIBXML2 REQUIRED libxml-2.0)
+# find_package(libxml2 REQUIRED)
+
 
 # 包含 libxml2 头文件路径
-include_directories(${LIBXML2_INCLUDE_DIRS})
-
+INCLUDE_DIRECTORIES(${ROOT_DIR}/lib/libxml2-2.9.3-win32-x86_64/include/libxml2)
+# FIND_LIBRARY(RUNTIME_LIB libxml2 ./lib/libxml2-2.7.8.win32/ ./lib/libxml2-2.7.8.win32/lib NO_DEFAULT_PATH)
+LINK_DIRECTORIES("${ROOT_DIR}/lib/libxml2-2.9.3-win32-x86_64/bin")
 
 find_package(Qt6 COMPONENTS Core Widgets Gui Network DBus Xml REQUIRED)
 
@@ -37,9 +39,13 @@ add_executable(GoldDisplay
 
 target_link_libraries(GoldDisplay
     PRIVATE Qt6::Core Qt6::Widgets Qt6::Gui Qt6::Network Qt6::DBus Qt6::Xml
-    ${LIBXML2_LIBRARIES}
+    libxml2-2.dll
 ) 
 
+if (WIN32)
+    set_target_properties(GoldDisplay PROPERTIES
+        WIN32_EXECUTABLE YES)
+endif()
 
 
 

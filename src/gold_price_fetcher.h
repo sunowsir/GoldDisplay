@@ -9,6 +9,7 @@
 #ifndef _GOLD_PRICE_FETCHER_H
 #define _GOLD_PRICE_FETCHER_H
 
+#include <QMainWindow>
 #include <QCoreApplication>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
@@ -16,19 +17,22 @@
 #include <libxml/HTMLparser.h>
 #include <libxml/xpath.h>
 
-class GoldPriceFetcher {
-private: 
-    int gold_price;
+class GoldPriceFetcher : public QObject {
+    Q_OBJECT
+    QMainWindow     *parent;
 
 private: 
     void fetchUrl(const QUrl &);
     void parseHtml(const QByteArray &);
 
 public: 
-    GoldPriceFetcher();
+    GoldPriceFetcher(QMainWindow *parent = nullptr);
     ~GoldPriceFetcher();
     
-    void gold_price_get(int &);
+    void gold_price_get();
+
+signals:
+    void gold_price_update(QString&);
 };
 
 #endif

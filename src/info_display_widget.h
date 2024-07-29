@@ -28,6 +28,8 @@
 
 #include <QMainWindow>
 #include <QGridLayout>
+#include <QVBoxLayout>
+#include <QPalette>
 
 #include "gold_price_fetcher.h"
 
@@ -38,6 +40,8 @@ class Info_Display_Widget : public QWidget {
 
     QLabel          *info_label;
 
+    QVBoxLayout     *layout;
+
     GoldPriceFetcher *gold_price_fetcher;
     QTimer          *timer;
 
@@ -45,8 +49,9 @@ public:
     explicit Info_Display_Widget(QMainWindow *parent = nullptr);
     ~Info_Display_Widget();
 
-private slots: 
-    void info_label_text_update();
+private slots:
+    void gold_price_get_timer_call_callback();
+    void info_label_text_update(QString&);
 };
 
 #endif

@@ -21,7 +21,6 @@ void GoldPriceFetcher::fetchUrl(const QUrl &url) {
             qDebug() << "Network error: " << reply->errorString().toStdString() ;
         }
         reply->deleteLater();
-        QCoreApplication::quit();
     });
 
     QNetworkRequest request(url);
@@ -63,11 +62,13 @@ void GoldPriceFetcher::parseHtml(const QByteArray &html) {
         QString qStrContent = QString::fromUtf8(charContent);
 
         if (is_found) {
-            this->gold_price = qStrContent.toInt();
+            // qDebug() << qStrContent;
+            this->gold_price_update(qStrContent);
             is_found = false;
         }
         
         if (qStrContent == QString("Au99.99")) {
+            // qDebug() << qStrContent;
             is_found = true;
             xmlFree(content);
             continue;
@@ -85,18 +86,16 @@ void GoldPriceFetcher::parseHtml(const QByteArray &html) {
 }
 
 
-GoldPriceFetcher::GoldPriceFetcher() {
-    this->gold_price = 0;
+GoldPriceFetcher::GoldPriceFetcher(QMainWindow *parent) {
+    this->parent = parent;
 }
 
 GoldPriceFetcher::~GoldPriceFetcher() {
     
 }
     
-void GoldPriceFetcher::gold_price_get(int &gold_price) {
+void GoldPriceFetcher::gold_price_get() {
     QUrl url("https://www.sge.com.cn/sjzx/yshqbg"); 
     this->fetchUrl(url);
-    gold_price = this->gold_price;
-
     return ;
 }
